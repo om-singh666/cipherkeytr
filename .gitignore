@@ -1,0 +1,4 @@
+# .gitignore for CipherKey
+.DS_Store
+Thumbs.db
+*.log
