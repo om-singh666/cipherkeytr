@@ -66,9 +66,12 @@ The strength score (0–100) checks for:
 
 ---
 
-## 📸 Screenshot
+## 📸 Screenshots
 
-> A beautiful dark cyberpunk UI with interactive strength indicators and side-by-side password comparison.
+![CipherKey Home](screenshot1.png)
+
+![Strength Meter in Action](screenshot2.png)
+
 
 ---
 
