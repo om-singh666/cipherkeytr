@@ -1,210 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CipherKey — Smart Password Generator</title>
-  <meta name="description" content="Generate ultra-strong passwords from your own keywords. Visual strength indicators and cybersecurity analysis included."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CipherKey — Smart Password Generator</title>
+    <meta name="description"
+        content="Generate ultra-strong passwords from your own keywords. Visual strength indicators and cybersecurity analysis included." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <!-- Animated background -->
-  <div class="bg-grid"></div>
-  <div class="particles" id="particles"></div>
+    <!-- Animated background -->
+    <div class="bg-grid"></div>
+    <div class="particles" id="particles"></div>
 
-  <header class="header">
-    <div class="logo">
-      <span class="logo-icon">🔐</span>
-      <span class="logo-text">Cipher<span class="accent">Key</span></span>
-    </div>
-    <p class="tagline">Smart Password Generator — Cybersecurity Redefined</p>
-  </header>
-
-  <main class="container">
-
-    <!-- Hero Section -->
-    <section class="hero">
-      <h1 class="hero-title">
-        <span class="typing-text" id="typingText">Turn your words into</span><br/>
-        <span class="gradient-text">Fort Knox Passwords</span>
-      </h1>
-      <p class="hero-sub">Enter your keywords or a base password below. We'll analyze its strength, then forge an ultra-secure version for you.</p>
-    </section>
-
-    <!-- Input Card -->
-    <section class="card input-card">
-      <label class="input-label" for="userPassword">
-        <span class="label-icon">✏️</span> Your Keywords / Base Password
-      </label>
-      <div class="input-wrapper">
-        <input
-          type="text"
-          id="userPassword"
-          class="password-input"
-          placeholder="e.g. sunshine, mydog123, coffee..."
-          autocomplete="off"
-          spellcheck="false"
-        />
-        <button class="eye-btn" id="toggleVisibility" title="Toggle visibility" aria-label="Toggle password visibility">
-          <span id="eyeIcon">👁️</span>
-        </button>
-      </div>
-
-      <!-- Original Strength Meter -->
-      <div class="strength-section" id="originalStrengthSection" style="display:none;">
-        <div class="strength-header">
-          <span class="strength-label">Your Password Strength</span>
-          <span class="strength-badge" id="originalBadge">Weak</span>
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">🔐</span>
+            <span class="logo-text">Cipher<span class="accent">Key</span></span>
         </div>
-        <div class="strength-bar-track">
-          <div class="strength-bar-fill" id="originalBar"></div>
+        <p class="tagline">Smart Password Generator — Cybersecurity Redefined</p>
+    </header>
+
+    <main class="container">
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">
+                <span class="typing-text" id="typingText">Turn your words into</span><br />
+                <span class="gradient-text">Fort Knox Passwords</span>
+            </h1>
+            <p class="hero-sub">Enter your keywords or a base password below. We'll analyze its strength, then forge an
+                ultra-secure version for you.</p>
+        </section>
+
+        <!-- Privacy Notice -->
+        <div class="privacy-banner">
+            <span>🔒 100% Private</span>
+            <span class="privacy-dot">•</span>
+            <span>Passwords are <strong>never saved, logged or sent</strong> to any server</span>
+            <span class="privacy-dot">•</span>
+            <span>Everything runs in your browser only</span>
         </div>
-        <div class="strength-details" id="originalDetails"></div>
-      </div>
 
-      <!-- Options -->
-      <div class="options-grid">
-        <div class="option-group">
-          <label for="lengthSlider">Password Length: <span id="lengthValue" class="accent">18</span></label>
-          <input type="range" id="lengthSlider" min="12" max="32" value="18" class="slider"/>
-        </div>
-        <div class="option-group toggles">
-          <label class="toggle-item">
-            <input type="checkbox" id="includeUpper" checked/>
-            <span class="toggle-switch"></span>
-            Uppercase
-          </label>
-          <label class="toggle-item">
-            <input type="checkbox" id="includeNumbers" checked/>
-            <span class="toggle-switch"></span>
-            Numbers
-          </label>
-          <label class="toggle-item">
-            <input type="checkbox" id="includeSymbols" checked/>
-            <span class="toggle-switch"></span>
-            Symbols
-          </label>
-        </div>
-      </div>
-
-      <button class="generate-btn" id="generateBtn">
-        <span class="btn-icon">⚡</span>
-        <span class="btn-text">Generate Strong Password</span>
-        <span class="btn-shimmer"></span>
-      </button>
-    </section>
-
-    <!-- Result Card -->
-    <section class="card result-card" id="resultCard" style="display:none;">
-      <div class="result-header">
-        <span class="result-icon">🛡️</span>
-        <h2 class="result-title">Your Forged Password</h2>
-      </div>
-
-      <div class="generated-password-box" id="generatedBox">
-        <span class="generated-password" id="generatedPassword"></span>
-        <button class="copy-btn" id="copyBtn" title="Copy to clipboard">
-          <span id="copyIcon">📋</span>
-        </button>
-      </div>
-
-      <!-- Generated Strength Meter -->
-      <div class="strength-section">
-        <div class="strength-header">
-          <span class="strength-label">Generated Password Strength</span>
-          <span class="strength-badge strong" id="generatedBadge">Fortress</span>
-        </div>
-        <div class="strength-bar-track">
-          <div class="strength-bar-fill generated" id="generatedBar"></div>
-        </div>
-        <div class="strength-details" id="generatedDetails"></div>
-      </div>
-
-      <!-- Comparison -->
-      <div class="comparison" id="comparison">
-        <h3 class="comparison-title">📊 Side-by-Side Comparison</h3>
-        <div class="comparison-grid">
-          <div class="compare-col">
-            <span class="compare-label">Your Password</span>
-            <div class="compare-score-bar">
-              <div class="compare-fill original-fill" id="originalCompareFill"></div>
+        <!-- Input Card -->
+        <section class="card input-card">
+            <label class="input-label" for="userPassword">
+                <span class="label-icon">✏️</span> Your Keywords / Base Password
+            </label>
+            <div class="input-wrapper">
+                <input type="text" id="userPassword" class="password-input"
+                    placeholder="e.g. sunshine, mydog123, coffee..." autocomplete="off" spellcheck="false" />
+                <button class="eye-btn" id="toggleVisibility" title="Toggle visibility"
+                    aria-label="Toggle password visibility">
+                    <span id="eyeIcon">👁️</span>
+                </button>
             </div>
-            <span class="compare-score" id="originalScore">0%</span>
-          </div>
-          <div class="compare-vs">VS</div>
-          <div class="compare-col">
-            <span class="compare-label">Generated Password</span>
-            <div class="compare-score-bar">
-              <div class="compare-fill generated-fill" id="generatedCompareFill"></div>
+
+            <!-- Original Strength Meter -->
+            <div class="strength-section" id="originalStrengthSection" style="display:none;">
+                <div class="strength-header">
+                    <span class="strength-label">Your Password Strength</span>
+                    <span class="strength-badge" id="originalBadge">Weak</span>
+                </div>
+                <div class="strength-bar-track">
+                    <div class="strength-bar-fill" id="originalBar"></div>
+                </div>
+                <div class="strength-details" id="originalDetails"></div>
             </div>
-            <span class="compare-score" id="generatedScore">0%</span>
-          </div>
-        </div>
-      </div>
 
-      <!-- Crack Time -->
-      <div class="crack-time-box" id="crackTimeBox">
-        <div class="crack-item">
-          <span class="crack-label">⏱️ Est. Crack Time (Yours)</span>
-          <span class="crack-value" id="crackTimeOriginal">—</span>
-        </div>
-        <div class="crack-divider"></div>
-        <div class="crack-item">
-          <span class="crack-label">🔒 Est. Crack Time (Generated)</span>
-          <span class="crack-value accent" id="crackTimeGenerated">—</span>
-        </div>
-      </div>
+            <!-- Options -->
+            <div class="options-grid">
+                <div class="option-group">
+                    <label for="lengthSlider">Password Length: <span id="lengthValue" class="accent">18</span></label>
+                    <input type="range" id="lengthSlider" min="12" max="32" value="18" class="slider" />
+                </div>
+                <div class="option-group toggles">
+                    <label class="toggle-item">
+                        <input type="checkbox" id="includeUpper" checked />
+                        <span class="toggle-switch"></span>
+                        Uppercase
+                    </label>
+                    <label class="toggle-item">
+                        <input type="checkbox" id="includeNumbers" checked />
+                        <span class="toggle-switch"></span>
+                        Numbers
+                    </label>
+                    <label class="toggle-item">
+                        <input type="checkbox" id="includeSymbols" checked />
+                        <span class="toggle-switch"></span>
+                        Symbols
+                    </label>
+                </div>
+            </div>
 
-      <button class="regenerate-btn" id="regenerateBtn">
-        🔄 Regenerate
-      </button>
-    </section>
+            <button class="generate-btn" id="generateBtn">
+                <span class="btn-icon">⚡</span>
+                <span class="btn-text">Generate Strong Password</span>
+                <span class="btn-shimmer"></span>
+            </button>
+        </section>
 
-    <!-- Tips Card -->
-    <section class="card tips-card">
-      <h3 class="tips-title">🧠 Password Security Tips</h3>
-      <div class="tips-grid">
-        <div class="tip-item">
-          <span class="tip-icon">📏</span>
-          <div>
-            <strong>Length matters</strong>
-            <p>Each extra character exponentially multiplies crack time.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <span class="tip-icon">🎲</span>
-          <div>
-            <strong>Randomness is key</strong>
-            <p>Avoid predictable patterns like "abc" or "123".</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <span class="tip-icon">🔁</span>
-          <div>
-            <strong>Never reuse passwords</strong>
-            <p>Use a unique password for every account you have.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <span class="tip-icon">🏦</span>
-          <div>
-            <strong>Use a password manager</strong>
-            <p>Store your passwords securely — don't memorize 30 of them!</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+        <!-- Result Card -->
+        <section class="card result-card" id="resultCard" style="display:none;">
+            <div class="result-header">
+                <span class="result-icon">🛡️</span>
+                <h2 class="result-title">Your Forged Password</h2>
+            </div>
 
-  <footer class="footer">
-    <p>🔐 CipherKey — Built for the paranoid, designed for everyone.</p>
-  </footer>
+            <div class="generated-password-box" id="generatedBox">
+                <span class="generated-password" id="generatedPassword"></span>
+                <button class="copy-btn" id="copyBtn" title="Copy to clipboard">
+                    <span id="copyIcon">📋</span>
+                </button>
+            </div>
 
-  <div class="toast" id="toast">✅ Copied to clipboard!</div>
+            <!-- Generated Strength Meter -->
+            <div class="strength-section">
+                <div class="strength-header">
+                    <span class="strength-label">Generated Password Strength</span>
+                    <span class="strength-badge strong" id="generatedBadge">Fortress</span>
+                </div>
+                <div class="strength-bar-track">
+                    <div class="strength-bar-fill generated" id="generatedBar"></div>
+                </div>
+                <div class="strength-details" id="generatedDetails"></div>
+            </div>
 
-  <script src="app.js"></script>
+            <!-- Comparison -->
+            <div class="comparison" id="comparison">
+                <h3 class="comparison-title">📊 Side-by-Side Comparison</h3>
+                <div class="comparison-grid">
+                    <div class="compare-col">
+                        <span class="compare-label">Your Password</span>
+                        <div class="compare-score-bar">
+                            <div class="compare-fill original-fill" id="originalCompareFill"></div>
+                        </div>
+                        <span class="compare-score" id="originalScore">0%</span>
+                    </div>
+                    <div class="compare-vs">VS</div>
+                    <div class="compare-col">
+                        <span class="compare-label">Generated Password</span>
+                        <div class="compare-score-bar">
+                            <div class="compare-fill generated-fill" id="generatedCompareFill"></div>
+                        </div>
+                        <span class="compare-score" id="generatedScore">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crack Time -->
+            <div class="crack-time-box" id="crackTimeBox">
+                <div class="crack-item">
+                    <span class="crack-label">⏱️ Est. Crack Time (Yours)</span>
+                    <span class="crack-value" id="crackTimeOriginal">—</span>
+                </div>
+                <div class="crack-divider"></div>
+                <div class="crack-item">
+                    <span class="crack-label">🔒 Est. Crack Time (Generated)</span>
+                    <span class="crack-value accent" id="crackTimeGenerated">—</span>
+                </div>
+            </div>
+
+            <button class="regenerate-btn" id="regenerateBtn">
+                🔄 Regenerate
+            </button>
+        </section>
+
+        <!-- Tips Card -->
+        <section class="card tips-card">
+            <h3 class="tips-title">🧠 Password Security Tips</h3>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <span class="tip-icon">📏</span>
+                    <div>
+                        <strong>Length matters</strong>
+                        <p>Each extra character exponentially multiplies crack time.</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🎲</span>
+                    <div>
+                        <strong>Randomness is key</strong>
+                        <p>Avoid predictable patterns like "abc" or "123".</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🔁</span>
+                    <div>
+                        <strong>Never reuse passwords</strong>
+                        <p>Use a unique password for every account you have.</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🏦</span>
+                    <div>
+                        <strong>Use a password manager</strong>
+                        <p>Store your passwords securely — don't memorize 30 of them!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>🔐 CipherKey — Built for the paranoid, designed for everyone.</p>
+        <p class="footer-credit">Made with ❤️ by <strong>Om Singh</strong></p>
+    </footer>
+
+    <div class="toast" id="toast">✅ Copied to clipboard!</div>
+
+    <script src="app.js"></script>
 </body>
+
 </html>
