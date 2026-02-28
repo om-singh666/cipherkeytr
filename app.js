@@ -111,44 +111,44 @@ function analyzeStrength(pwd) {
   let score = 0;
   const checks = [];
 
-  const hasLower   = /[a-z]/.test(pwd);
-  const hasUpper   = /[A-Z]/.test(pwd);
-  const hasDigit   = /\d/.test(pwd);
-  const hasSymbol  = /[^a-zA-Z0-9]/.test(pwd);
-  const isLong     = pwd.length >= 12;
+  const hasLower = /[a-z]/.test(pwd);
+  const hasUpper = /[A-Z]/.test(pwd);
+  const hasDigit = /\d/.test(pwd);
+  const hasSymbol = /[^a-zA-Z0-9]/.test(pwd);
+  const isLong = pwd.length >= 12;
   const isVeryLong = pwd.length >= 18;
-  const noRepeat   = !/(.)\1{2,}/.test(pwd);
-  const noCommon   = !/(password|123456|qwerty|abc123|letmein|monkey|dragon|master|welcome)/i.test(pwd);
+  const noRepeat = !/(.)\1{2,}/.test(pwd);
+  const noCommon = !/(password|123456|qwerty|abc123|letmein|monkey|dragon|master|welcome)/i.test(pwd);
 
-  if (hasLower)   { score += 10; checks.push({ label: 'Lowercase ✓', pass: true }); }
-  else            { checks.push({ label: 'Lowercase ✗', pass: false }); }
+  if (hasLower) { score += 10; checks.push({ label: 'Lowercase ✓', pass: true }); }
+  else { checks.push({ label: 'Lowercase ✗', pass: false }); }
 
-  if (hasUpper)   { score += 15; checks.push({ label: 'Uppercase ✓', pass: true }); }
-  else            { checks.push({ label: 'Uppercase ✗', pass: false }); }
+  if (hasUpper) { score += 15; checks.push({ label: 'Uppercase ✓', pass: true }); }
+  else { checks.push({ label: 'Uppercase ✗', pass: false }); }
 
-  if (hasDigit)   { score += 15; checks.push({ label: 'Numbers ✓', pass: true }); }
-  else            { checks.push({ label: 'Numbers ✗', pass: false }); }
+  if (hasDigit) { score += 15; checks.push({ label: 'Numbers ✓', pass: true }); }
+  else { checks.push({ label: 'Numbers ✗', pass: false }); }
 
-  if (hasSymbol)  { score += 20; checks.push({ label: 'Symbols ✓', pass: true }); }
-  else            { checks.push({ label: 'Symbols ✗', pass: false }); }
+  if (hasSymbol) { score += 20; checks.push({ label: 'Symbols ✓', pass: true }); }
+  else { checks.push({ label: 'Symbols ✗', pass: false }); }
 
-  if (isLong)     { score += 15; checks.push({ label: '12+ chars ✓', pass: true }); }
-  else            { checks.push({ label: '12+ chars ✗', pass: false }); }
+  if (isLong) { score += 15; checks.push({ label: '12+ chars ✓', pass: true }); }
+  else { checks.push({ label: '12+ chars ✗', pass: false }); }
 
   if (isVeryLong) { score += 10; checks.push({ label: '18+ chars ✓', pass: true }); }
 
-  if (noRepeat)   { score += 10; checks.push({ label: 'No repeats ✓', pass: true }); }
-  else            { checks.push({ label: 'No repeats ✗', pass: false }); }
+  if (noRepeat) { score += 10; checks.push({ label: 'No repeats ✓', pass: true }); }
+  else { checks.push({ label: 'No repeats ✗', pass: false }); }
 
-  if (noCommon)   { score += 5; checks.push({ label: 'Not common ✓', pass: true }); }
-  else            { checks.push({ label: 'Common word ✗', pass: false }); }
+  if (noCommon) { score += 5; checks.push({ label: 'Not common ✓', pass: true }); }
+  else { checks.push({ label: 'Common word ✗', pass: false }); }
 
   score = Math.min(score, 100);
   let label;
-  if (score <= 25)      label = 'Weak';
+  if (score <= 25) label = 'Weak';
   else if (score <= 50) label = 'Fair';
   else if (score <= 75) label = 'Good';
-  else                  label = 'Fortress';
+  else label = 'Fortress';
 
   return { score, label, checks };
 }
@@ -167,15 +167,15 @@ function estimateCrackTime(pwd) {
   const guessesPerSecond = 1e10; // 10 billion guesses/sec (modern GPU)
   const secondsToCrack = combinations / guessesPerSecond / 2;
 
-  if (secondsToCrack < 1)          return '< 1 second';
-  if (secondsToCrack < 60)         return `${Math.round(secondsToCrack)} seconds`;
-  if (secondsToCrack < 3600)       return `${Math.round(secondsToCrack / 60)} minutes`;
-  if (secondsToCrack < 86400)      return `${Math.round(secondsToCrack / 3600)} hours`;
-  if (secondsToCrack < 2.628e6)    return `${Math.round(secondsToCrack / 86400)} days`;
-  if (secondsToCrack < 3.156e7)    return `${Math.round(secondsToCrack / 2.628e6)} months`;
-  if (secondsToCrack < 3.156e9)    return `${Math.round(secondsToCrack / 3.156e7)} years`;
-  if (secondsToCrack < 3.156e12)   return `${Math.round(secondsToCrack / 3.156e9)}K years`;
-  if (secondsToCrack < 3.156e15)   return `${Math.round(secondsToCrack / 3.156e12)}M years`;
+  if (secondsToCrack < 1) return '< 1 second';
+  if (secondsToCrack < 60) return `${Math.round(secondsToCrack)} seconds`;
+  if (secondsToCrack < 3600) return `${Math.round(secondsToCrack / 60)} minutes`;
+  if (secondsToCrack < 86400) return `${Math.round(secondsToCrack / 3600)} hours`;
+  if (secondsToCrack < 2.628e6) return `${Math.round(secondsToCrack / 86400)} days`;
+  if (secondsToCrack < 3.156e7) return `${Math.round(secondsToCrack / 2.628e6)} months`;
+  if (secondsToCrack < 3.156e9) return `${Math.round(secondsToCrack / 3.156e7)} years`;
+  if (secondsToCrack < 3.156e12) return `${Math.round(secondsToCrack / 3.156e9)}K years`;
+  if (secondsToCrack < 3.156e15) return `${Math.round(secondsToCrack / 3.156e12)}M years`;
   return '🔒 Centuries+';
 }
 
@@ -185,10 +185,10 @@ function applyStrengthUI(analysis, barEl, badgeEl, detailsEl) {
 
   // color
   let color;
-  if (score <= 25)      color = '#ff4d4d';
+  if (score <= 25) color = '#ff4d4d';
   else if (score <= 50) color = '#ffd166';
   else if (score <= 75) color = '#06d6a0';
-  else                  color = '#00f5d4';
+  else color = '#00f5d4';
 
   barEl.style.width = score + '%';
   barEl.style.background = color;
@@ -196,10 +196,10 @@ function applyStrengthUI(analysis, barEl, badgeEl, detailsEl) {
 
   badgeEl.textContent = label;
   badgeEl.className = 'strength-badge';
-  if (score <= 25)      badgeEl.classList.add('weak');
+  if (score <= 25) badgeEl.classList.add('weak');
   else if (score <= 50) badgeEl.classList.add('fair');
   else if (score <= 75) badgeEl.classList.add('good');
-  else                  badgeEl.classList.add('strong');
+  else badgeEl.classList.add('strong');
 
   // details tags
   detailsEl.innerHTML = '';
@@ -220,61 +220,64 @@ function generateStrongPassword(base) {
   const symbols = '!@#$%^&*_+-=?';
 
   let charset = lower;
-  if (includeUpper.checked)   charset += upper;
+  if (includeUpper.checked) charset += upper;
   if (includeNumbers.checked) charset += digits;
   if (includeSymbols.checked) charset += symbols;
 
-  // Extract meaningful characters from the base input
+  // Clean base input — keep alphanumeric only
   const baseClean = (base || 'secure').replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
-  const baseChars = baseClean.length > 0 ? baseClean : 'key';
+  const baseChars = baseClean.length > 0 ? baseClean : 'secure';
 
-  // Mutate base chars (substitute some chars, keep some)
+  // Leet-speak mutation map
   const mutations = {
-    'a': '@', 'A': '@', 'e': '3', 'E': '3', 'i': '!', 'I': '1',
-    'o': '0', 'O': '0', 's': '$', 'S': '$', 't': '+', 'T': '+',
-    'l': '1', 'L': '1', 'b': '6', 'B': '8', 'g': '9', 'G': '6'
+    'a': '@', 'A': '@',
+    'e': '3', 'E': '3',
+    'i': '!', 'I': '1',
+    'o': '0', 'O': '0',
+    's': '$', 'S': '$',
+    't': '+', 'T': '+',
+    'l': '1', 'L': '1',
+    'b': '6', 'B': '8',
+    'g': '9', 'G': '6',
+    'z': '2', 'Z': '2',
   };
 
-  let mutated = '';
+  // Step 1: Mutate each character of the base — keep it ORDER-PRESERVING
+  // so "omsingh" stays recognizable as "0m$!n9H" etc.
+  let mutatedBase = '';
   for (const ch of baseChars) {
     const r = Math.random();
-    if (r < 0.35 && mutations[ch]) {
-      mutated += mutations[ch];
-    } else if (r < 0.55 && /[a-z]/.test(ch)) {
-      mutated += ch.toUpperCase();
+    if (includeSymbols.checked && r < 0.45 && mutations[ch]) {
+      mutatedBase += mutations[ch];                        // leet substitute
+    } else if (includeUpper.checked && r < 0.65 && /[a-z]/.test(ch)) {
+      mutatedBase += ch.toUpperCase();                     // random uppercase
     } else {
-      mutated += ch;
+      mutatedBase += ch;                                   // keep original
     }
   }
 
-  // Build password: start with mutated base, pad with random chars
-  let pwd = mutated;
-  const needed = length - pwd.length;
-  for (let i = 0; i < Math.max(needed, 4); i++) {
-    pwd += charset[Math.floor(Math.random() * charset.length)];
+  // Step 2: Build a secure random SUFFIX to pad to desired length
+  const needed = Math.max(length - mutatedBase.length, 4);
+  let suffix = '';
+  for (let i = 0; i < needed; i++) {
+    suffix += charset[Math.floor(Math.random() * charset.length)];
   }
 
-  // Ensure mandatory character types
-  const ensures = [];
-  if (includeUpper.checked && !/[A-Z]/.test(pwd))   ensures.push(upper[Math.floor(Math.random() * upper.length)]);
-  if (includeNumbers.checked && !/\d/.test(pwd))    ensures.push(digits[Math.floor(Math.random() * digits.length)]);
-  if (includeSymbols.checked && !/[!@#$%^&*_+\-=?]/.test(pwd)) ensures.push(symbols[Math.floor(Math.random() * symbols.length)]);
-
-  // Splice mandatory chars in at random positions
-  ensures.forEach(ch => {
-    const pos = Math.floor(Math.random() * pwd.length);
-    pwd = pwd.slice(0, pos) + ch + pwd.slice(pos);
-  });
-
-  // Truncate/shuffle to final length
-  const arr = pwd.split('');
-  // Fisher-Yates shuffle
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+  // Step 3: Ensure all required character types exist somewhere in the suffix
+  if (includeUpper.checked && !/[A-Z]/.test(mutatedBase + suffix)) {
+    suffix = upper[Math.floor(Math.random() * upper.length)] + suffix.slice(1);
+  }
+  if (includeNumbers.checked && !/\d/.test(mutatedBase + suffix)) {
+    suffix = digits[Math.floor(Math.random() * digits.length)] + suffix.slice(1);
+  }
+  if (includeSymbols.checked && !/[!@#$%^&*_+\-=?]/.test(mutatedBase + suffix)) {
+    suffix = symbols[Math.floor(Math.random() * symbols.length)] + suffix.slice(1);
   }
 
-  return arr.slice(0, length).join('');
+  // Step 4: Combine — base first (recognizable), suffix after
+  // Trim to desired length, keeping base at the front
+  const full = (mutatedBase + suffix).slice(0, length);
+  return full;
 }
 
 // ---- Live Strength on Input ----
@@ -303,28 +306,28 @@ function runGenerate() {
 
     // Analyze both
     const origAnalysis = analyzeStrength(base || '');
-    const genAnalysis  = analyzeStrength(generated);
+    const genAnalysis = analyzeStrength(generated);
 
     // Apply strength UIs
     applyStrengthUI(genAnalysis, generatedBar, generatedBadge, generatedDetails);
 
     // Comparison
     const origPct = origAnalysis.score;
-    const genPct  = genAnalysis.score;
-    originalCompareFill.style.width  = '0%';
+    const genPct = genAnalysis.score;
+    originalCompareFill.style.width = '0%';
     generatedCompareFill.style.width = '0%';
-    originalScore.textContent  = origPct + '%';
-    generatedScore.textContent = genPct  + '%';
+    originalScore.textContent = origPct + '%';
+    generatedScore.textContent = genPct + '%';
 
     requestAnimationFrame(() => {
       setTimeout(() => {
-        originalCompareFill.style.width  = origPct + '%';
-        generatedCompareFill.style.width = genPct  + '%';
+        originalCompareFill.style.width = origPct + '%';
+        generatedCompareFill.style.width = genPct + '%';
       }, 100);
     });
 
     // Crack times
-    crackTimeOriginal.textContent  = estimateCrackTime(base || 'x');
+    crackTimeOriginal.textContent = estimateCrackTime(base || 'x');
     crackTimeGenerated.textContent = estimateCrackTime(generated);
 
     // Show result card
