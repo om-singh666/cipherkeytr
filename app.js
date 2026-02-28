@@ -213,71 +213,57 @@ function applyStrengthUI(analysis, barEl, badgeEl, detailsEl) {
 
 // ---- Password Generation ----
 function generateStrongPassword(base) {
-  const length = parseInt(lengthSlider.value);
-  const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-  const lower = 'abcdefghjkmnpqrstuvwxyz';
-  const digits = '23456789';
-  const symbols = '!@#$%^&*_+-=?';
+  // Keep user's original input intact (their @ # 123 etc. stay!)
+  const baseClean = (base || 'secure').replace(/\s+/g, '');
 
-  let charset = lower;
-  if (includeUpper.checked) charset += upper;
-  if (includeNumbers.checked) charset += digits;
-  if (includeSymbols.checked) charset += symbols;
-
-  // Clean base input — keep alphanumeric only
-  const baseClean = (base || 'secure').replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
-  const baseChars = baseClean.length > 0 ? baseClean : 'secure';
-
-  // Leet-speak mutation map
-  const mutations = {
-    'a': '@', 'A': '@',
-    'e': '3', 'E': '3',
-    'i': '!', 'I': '1',
-    'o': '0', 'O': '0',
-    's': '$', 'S': '$',
-    't': '+', 'T': '+',
-    'l': '1', 'L': '1',
-    'b': '6', 'B': '8',
-    'g': '9', 'G': '6',
-    'z': '2', 'Z': '2',
-  };
-
-  // Step 1: Mutate each character of the base — keep it ORDER-PRESERVING
-  // so "omsingh" stays recognizable as "0m$!n9H" etc.
-  let mutatedBase = '';
-  for (const ch of baseChars) {
-    const r = Math.random();
-    if (includeSymbols.checked && r < 0.45 && mutations[ch]) {
-      mutatedBase += mutations[ch];                        // leet substitute
-    } else if (includeUpper.checked && r < 0.65 && /[a-z]/.test(ch)) {
-      mutatedBase += ch.toUpperCase();                     // random uppercase
+  // Step 1: Apply MINIMAL leet mutations — max 2 chars so word stays readable
+  const leetMap = { 'o': '0', 'a': '@', 'e': '3', 'i': '1', 's': '$' };
+  let mutated = '';
+  let mutCount = 0;
+  for (const ch of baseClean) {
+    const lc = ch.toLowerCase();
+    if (mutCount < 2 && leetMap[lc] && Math.random() < 0.55 && includeSymbols.checked) {
+      mutated += leetMap[lc];
+      mutCount++;
     } else {
-      mutatedBase += ch;                                   // keep original
+      mutated += ch;
     }
   }
 
-  // Step 2: Build a secure random SUFFIX to pad to desired length
-  const needed = Math.max(length - mutatedBase.length, 4);
-  let suffix = '';
-  for (let i = 0; i < needed; i++) {
-    suffix += charset[Math.floor(Math.random() * charset.length)];
+  // Step 2: Capitalize the first lowercase alpha — looks intentional
+  let result = '';
+  let capped = false;
+  for (const ch of mutated) {
+    if (!capped && /[a-z]/.test(ch) && includeUpper.checked) {
+      result += ch.toUpperCase();
+      capped = true;
+    } else {
+      result += ch;
+    }
   }
 
-  // Step 3: Ensure all required character types exist somewhere in the suffix
-  if (includeUpper.checked && !/[A-Z]/.test(mutatedBase + suffix)) {
-    suffix = upper[Math.floor(Math.random() * upper.length)] + suffix.slice(1);
-  }
-  if (includeNumbers.checked && !/\d/.test(mutatedBase + suffix)) {
-    suffix = digits[Math.floor(Math.random() * digits.length)] + suffix.slice(1);
-  }
-  if (includeSymbols.checked && !/[!@#$%^&*_+\-=?]/.test(mutatedBase + suffix)) {
-    suffix = symbols[Math.floor(Math.random() * symbols.length)] + suffix.slice(1);
+  // Step 3: Add SHORT memorable booster — only what's missing
+  const symOpts = ['!', '#', '@', '*'];
+  const numOpts = ['7', '42', '9', '23', '99'];
+  let booster = '';
+  if (includeSymbols.checked && !/[!@#$%^&*_+\-=?]/.test(result))
+    booster += symOpts[Math.floor(Math.random() * symOpts.length)];
+  if (includeNumbers.checked && !/\d/.test(result))
+    booster += numOpts[Math.floor(Math.random() * numOpts.length)];
+  result += booster;
+
+  // Step 4: If slider asks for more length, pad with a memorable word (NOT random junk)
+  const desiredLength = parseInt(lengthSlider.value);
+  if (result.length < desiredLength) {
+    const memWords = ['Key', 'Pro', 'Max', 'One', 'Safe', 'Lock'];
+    result += memWords[Math.floor(Math.random() * memWords.length)];
+    if (result.length < desiredLength) {
+      result += symOpts[Math.floor(Math.random() * symOpts.length)];
+      result += numOpts[Math.floor(Math.random() * numOpts.length)];
+    }
   }
 
-  // Step 4: Combine — base first (recognizable), suffix after
-  // Trim to desired length, keeping base at the front
-  const full = (mutatedBase + suffix).slice(0, length);
-  return full;
+  return result.slice(0, Math.max(result.length, desiredLength));
 }
 
 // ---- Live Strength on Input ----
