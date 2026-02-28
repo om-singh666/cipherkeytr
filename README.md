@@ -2,7 +2,7 @@
 
 > **Cybersecurity tool that transforms your keywords into ultra-secure passwords — with live strength analysis.**
 
-🌐 **Live Site:** [View on GitHub Pages](#) *(update this link after deployment)*
+🌐 **Live Site:** [https://om-singh666.github.io/cipherkeytr/](https://om-singh666.github.io/cipherkeytr/)
 
 ---
 
